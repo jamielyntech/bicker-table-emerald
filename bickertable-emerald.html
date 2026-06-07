@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>The Bicker Table</title>
+  <meta name="description" content="An invitation-only dinner series in Los Angeles, for the people building enterprise AI." />
+  <meta property="og:title" content="The Bicker Table" />
+  <meta property="og:description" content="The room you have to be asked into." />
+  <meta property="og:type" content="website" />
+  <meta name="theme-color" content="#0D1612" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Italiana&family=Inter+Tight:wght@400;500&display=swap" rel="stylesheet" />
+
+  <style>
+    :root {
+      --ink: #0D1612;
+      --ink-soft: #18221D;
+      --ivory: #F4EFE3;
+      --ivory-soft: #DCD5C4;
+      --emerald: #4A8A6F;
+      --emerald-deep: #2D5D4A;
+      --emerald-bright: #6BAE8C;
+      --rule: rgba(74, 138, 111, 0.5);
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    html, body {
+      background: var(--ink);
+      color: var(--ivory);
+      font-family: 'Cormorant Garamond', 'Times New Roman', serif;
+      font-weight: 400;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      overflow-x: hidden;
+    }
+
+    body {
+      min-height: 100vh;
+      position: relative;
+      background:
+        radial-gradient(ellipse at 50% 0%, rgba(74, 138, 111, 0.15) 0%, transparent 60%),
+        radial-gradient(ellipse at 50% 100%, rgba(74, 138, 111, 0.08) 0%, transparent 50%),
+        var(--ink);
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' /%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.5'/%3E%3C/svg%3E");
+      opacity: 0.04;
+      pointer-events: none;
+      z-index: 1;
+      mix-blend-mode: overlay;
+    }
+
+    .container {
+      position: relative;
+      z-index: 3;
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 0 32px;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .header {
+      padding-top: 48px;
+      display: flex;
+      justify-content: center;
+      opacity: 0;
+      animation: fadeIn 1.2s ease 0.1s forwards;
+    }
+
+    .mark {
+      font-family: 'Inter Tight', sans-serif;
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.4em;
+      color: var(--emerald-bright);
+      text-transform: uppercase;
+    }
+
+    .hero {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 70px 0 60px;
+    }
+
+    .ornament {
+      width: 2px;
+      height: 56px;
+      background: var(--emerald-bright);
+      margin-bottom: 48px;
+      opacity: 0;
+      animation: rise 1.2s ease 0.4s forwards;
+    }
+
+    h1 {
+      font-family: 'Italiana', 'Cormorant Garamond', serif;
+      font-weight: 400;
+      font-size: clamp(3rem, 9.5vw, 6rem);
+      letter-spacing: 0.01em;
+      line-height: 1.02;
+      color: var(--ivory);
+      margin-bottom: 32px;
+      opacity: 0;
+      animation: fadeIn 1.4s ease 0.6s forwards;
+    }
+
+    h1 .article {
+      display: block;
+      font-size: 0.42em;
+      letter-spacing: 0.32em;
+      color: var(--emerald-bright);
+      text-transform: uppercase;
+      font-family: 'Inter Tight', sans-serif;
+      font-weight: 500;
+      margin-bottom: 20px;
+    }
+
+    .tagline {
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-weight: 500;
+      font-size: clamp(1.3rem, 2.8vw, 1.6rem);
+      color: var(--ivory);
+      letter-spacing: 0.01em;
+      max-width: 540px;
+      line-height: 1.4;
+      opacity: 0;
+      animation: fadeIn 1.4s ease 0.9s forwards;
+    }
+
+    .rule {
+      width: 80px;
+      height: 1px;
+      background: var(--emerald);
+      margin: 56px 0 40px;
+      opacity: 0;
+      animation: expand 1s ease 1.2s forwards;
+    }
+
+    .body-text {
+      max-width: 500px;
+      font-size: 1.15rem;
+      line-height: 1.6;
+      color: var(--ivory);
+      font-weight: 400;
+      letter-spacing: 0.005em;
+      opacity: 0;
+      animation: fadeIn 1.4s ease 1.4s forwards;
+    }
+
+    .body-text p {
+      margin-bottom: 20px;
+    }
+
+    .body-text p:last-child {
+      margin-bottom: 0;
+      font-style: italic;
+      color: var(--emerald-bright);
+      font-size: 1.2rem;
+    }
+
+    .inquiries {
+      margin-top: 72px;
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+      align-items: center;
+      opacity: 0;
+      animation: fadeIn 1.4s ease 1.7s forwards;
+    }
+
+    .inquiries-label {
+      font-family: 'Inter Tight', sans-serif;
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.4em;
+      text-transform: uppercase;
+      color: var(--emerald-bright);
+      margin-bottom: 8px;
+    }
+
+    .link-pair {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .link-pair a {
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-weight: 500;
+      font-size: 1.25rem;
+      color: var(--ivory);
+      text-decoration: none;
+      padding: 14px 28px;
+      letter-spacing: 0.01em;
+      position: relative;
+      border: 1px solid var(--emerald-deep);
+      background: rgba(45, 93, 74, 0.15);
+      transition: all 0.35s ease;
+    }
+
+    .link-pair a:hover {
+      color: var(--ivory);
+      background: var(--emerald-deep);
+      border-color: var(--emerald-bright);
+    }
+
+    footer {
+      padding: 56px 0 40px;
+      text-align: center;
+      opacity: 0;
+      animation: fadeIn 1.4s ease 2.0s forwards;
+    }
+
+    .footer-rule {
+      width: 50px;
+      height: 1px;
+      background: var(--emerald);
+      margin: 0 auto 24px;
+    }
+
+    .location {
+      font-family: 'Inter Tight', sans-serif;
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.4em;
+      text-transform: uppercase;
+      color: var(--ivory-soft);
+      margin-bottom: 12px;
+    }
+
+    .est {
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-size: 0.95rem;
+      color: var(--ivory-soft);
+      letter-spacing: 0.02em;
+    }
+
+    @keyframes fadeIn { to { opacity: 1; } }
+    @keyframes rise { 0% { opacity: 0; transform: scaleY(0); transform-origin: center; } 100% { opacity: 1; transform: scaleY(1); } }
+    @keyframes expand { 0% { opacity: 0; width: 0; } 100% { opacity: 1; width: 80px; } }
+
+    @media (max-width: 640px) {
+      .container { padding: 0 24px; }
+      .header { padding-top: 36px; }
+      .hero { padding: 50px 0 40px; }
+      .ornament { height: 44px; margin-bottom: 36px; }
+      .body-text { font-size: 1.1rem; }
+      .body-text p:last-child { font-size: 1.15rem; }
+      .inquiries { margin-top: 56px; }
+      .link-pair a { font-size: 1.1rem; padding: 13px 22px; }
+      footer { padding: 44px 0 32px; }
+    }
+
+    @media (max-width: 420px) {
+      h1 { font-size: 2.6rem; }
+      .tagline { font-size: 1.2rem; }
+      .link-pair { flex-direction: column; gap: 14px; width: 100%; }
+      .link-pair a { width: 100%; max-width: 280px; text-align: center; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        opacity: 1 !important;
+      }
+      .ornament, .rule { opacity: 1 !important; transform: none !important; width: 80px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header class="header">
+      <div class="mark">Los Angeles &nbsp;·&nbsp; By Invitation</div>
+    </header>
+
+    <main class="hero">
+      <div class="ornament"></div>
+
+      <h1>
+        <span class="article">The</span>
+        Bicker Table
+      </h1>
+
+      <p class="tagline">The room you have to be asked into.</p>
+
+      <div class="rule"></div>
+
+      <div class="body-text">
+        <p>An invitation-only dinner series for the senior leaders building enterprise AI. Twelve seats. One long table. Three hours of candid conversation, off the record.</p>
+        <p>We do not sell seats. We extend them.</p>
+      </div>
+
+      <div class="inquiries">
+        <div class="inquiries-label">Inquiries</div>
+        <div class="link-pair">
+          <a href="mailto:jamie.arias@bickertable.com?subject=Sponsorship%20Inquiry&body=Hello%2C%0A%0AI'd%20like%20to%20learn%20more%20about%20sponsoring%20The%20Bicker%20Table.%0A%0AName%3A%0ACompany%3A%0ARole%3A%0A%0A">Sponsorship</a>
+          <a href="mailto:jamie.arias@bickertable.com?subject=Guest%20Nomination&body=Hello%2C%0A%0AI'd%20like%20to%20nominate%20a%20guest%20for%20The%20Bicker%20Table.%0A%0ANominee%3A%0ACompany%20%26%20Role%3A%0AWhy%20this%20seat%3A%0A%0AYour%20name%3A%0A">Guest Nomination</a>
+        </div>
+      </div>
+    </main>
+
+    <footer>
+      <div class="footer-rule"></div>
+      <div class="location">A Private Residence &nbsp;·&nbsp; Los Angeles</div>
+      <div class="est">est. 2026</div>
+    </footer>
+  </div>
+</body>
+</html>
