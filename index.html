@@ -14,6 +14,10 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Italiana&family=Inter+Tight:wght@400;500&display=swap" rel="stylesheet" />
 
+  <!-- Apollo script begin -->
+  <script>(function initApolloInbound(){var TIMEOUT_MS=15000;var timeoutId;var style=document.createElement('style');style.id='apollo-form-prehide-css';style.textContent='form:has(input[type="email" i]),form:has(input[name="email" i]),.hs-form-iframe{position:relative!important}form:has(input[type="email" i])::before,form:has(input[name="email" i])::before,.hs-form-iframe::before{content:"";position:absolute;inset:0;display:flex;align-items:center;justify-content:center;width:50px;height:50px;margin:auto;border:2.5px solid #e1e1e1;border-top:2.5px solid #9ea3a6;border-radius:50%;animation:spin 1s linear infinite;background-color:transparent;pointer-events:auto;z-index:999999;opacity:1}form:has(input[type="email" i]) *,form:has(input[name="email" i]) *,.hs-form-iframe *{opacity:0!important;user-select:none!important;pointer-events:none!important}@keyframes spin{0%{transform:rotate(0deg)}100%{transform:rotate(360deg)}}';(document.head || document.documentElement).appendChild(style);function cleanup(){var styleEl=document.getElementById('apollo-form-prehide-css');if(styleEl)styleEl.remove();if(timeoutId)clearTimeout(timeoutId);}timeoutId=setTimeout(function(){console.warn('[Apollo] Form enrichment timeout after 5s - revealing forms. Check network and console for errors.');cleanup();},TIMEOUT_MS);var nocache=Math.random().toString(36).substring(7);var script=document.createElement('script');script.src='https://assets.apollo.io/js/apollo-inbound.js?nocache=' + nocache;script.defer=true;script.onerror=function(){console.error('[Apollo] Failed to load form enrichment script');cleanup();};script.onload=function(){try{window.ApolloInbound.formEnrichment.init({appId: '6a26126b7f7274001064fc56',onReady: function(){cleanup();},onError: function(err){console.error('[Apollo] Form enrichment init error:',err);cleanup();}});}catch(err){console.error('[Apollo] Error initializing form enrichment:',err);cleanup();}};document.head.appendChild(script);})();</script>
+  <!-- Apollo script end -->
+
   <style>
     :root {
       --ink: #0D1612;
@@ -161,9 +165,7 @@
       animation: fadeIn 1.4s ease 1.4s forwards;
     }
 
-    .body-text p {
-      margin-bottom: 20px;
-    }
+    .body-text p { margin-bottom: 20px; }
 
     .body-text p:last-child {
       margin-bottom: 0;
@@ -200,7 +202,8 @@
       justify-content: center;
     }
 
-    .link-pair a {
+    .link-pair a,
+    .link-pair button {
       font-family: 'Cormorant Garamond', serif;
       font-style: italic;
       font-weight: 500;
@@ -213,9 +216,11 @@
       border: 1px solid var(--emerald-deep);
       background: rgba(45, 93, 74, 0.15);
       transition: all 0.35s ease;
+      cursor: pointer;
     }
 
-    .link-pair a:hover {
+    .link-pair a:hover,
+    .link-pair button:hover {
       color: var(--ivory);
       background: var(--emerald-deep);
       border-color: var(--emerald-bright);
@@ -253,9 +258,141 @@
       letter-spacing: 0.02em;
     }
 
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.75);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      z-index: 100;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      animation: overlayIn 0.3s ease;
+    }
+
+    .modal-overlay.is-open { display: flex; }
+
+    .modal {
+      background: var(--ink-soft);
+      border: 1px solid var(--emerald-deep);
+      max-width: 480px;
+      width: 100%;
+      max-height: 90vh;
+      overflow-y: auto;
+      padding: 48px 40px;
+      position: relative;
+      animation: modalIn 0.4s ease;
+    }
+
+    .modal-close {
+      position: absolute;
+      top: 18px;
+      right: 18px;
+      background: transparent;
+      border: none;
+      color: var(--ivory-soft);
+      font-size: 22px;
+      cursor: pointer;
+      padding: 8px;
+      line-height: 1;
+      transition: color 0.25s ease;
+      font-family: 'Inter Tight', sans-serif;
+    }
+
+    .modal-close:hover { color: var(--emerald-bright); }
+
+    .modal-title {
+      font-family: 'Italiana', serif;
+      font-weight: 400;
+      font-size: 2rem;
+      color: var(--ivory);
+      margin-bottom: 8px;
+      line-height: 1.1;
+    }
+
+    .modal-subtitle {
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-size: 1.05rem;
+      color: var(--emerald-bright);
+      margin-bottom: 32px;
+    }
+
+    .modal-form { display: flex; flex-direction: column; gap: 18px; }
+
+    .field { display: flex; flex-direction: column; gap: 6px; }
+
+    .field label {
+      font-family: 'Inter Tight', sans-serif;
+      font-size: 10px;
+      font-weight: 500;
+      letter-spacing: 0.32em;
+      text-transform: uppercase;
+      color: var(--emerald-bright);
+    }
+
+    .field input {
+      background: transparent;
+      border: none;
+      border-bottom: 1px solid var(--emerald-deep);
+      padding: 10px 0;
+      color: var(--ivory);
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.1rem;
+      transition: border-color 0.3s ease;
+      width: 100%;
+    }
+
+    .field input:focus { outline: none; border-bottom-color: var(--emerald-bright); }
+
+    .field input::placeholder { color: rgba(220, 213, 196, 0.3); font-style: italic; }
+
+    .submit-btn {
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-weight: 500;
+      font-size: 1.2rem;
+      color: var(--ivory);
+      background: var(--emerald-deep);
+      border: 1px solid var(--emerald);
+      padding: 14px 28px;
+      margin-top: 12px;
+      cursor: pointer;
+      letter-spacing: 0.01em;
+      transition: all 0.3s ease;
+    }
+
+    .submit-btn:hover { background: var(--emerald); border-color: var(--emerald-bright); }
+
+    .submit-btn:disabled { opacity: 0.6; cursor: not-allowed; }
+
+    .thank-you { display: none; text-align: center; padding: 20px 0; }
+
+    .thank-you.is-shown { display: block; }
+
+    .thank-you h3 {
+      font-family: 'Italiana', serif;
+      font-weight: 400;
+      font-size: 1.75rem;
+      color: var(--ivory);
+      margin-bottom: 16px;
+    }
+
+    .thank-you p {
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-size: 1.1rem;
+      color: var(--emerald-bright);
+      line-height: 1.5;
+    }
+
     @keyframes fadeIn { to { opacity: 1; } }
     @keyframes rise { 0% { opacity: 0; transform: scaleY(0); transform-origin: center; } 100% { opacity: 1; transform: scaleY(1); } }
     @keyframes expand { 0% { opacity: 0; width: 0; } 100% { opacity: 1; width: 80px; } }
+    @keyframes overlayIn { from { opacity: 0; } to { opacity: 1; } }
+    @keyframes modalIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
 
     @media (max-width: 640px) {
       .container { padding: 0 24px; }
@@ -265,15 +402,17 @@
       .body-text { font-size: 1.1rem; }
       .body-text p:last-child { font-size: 1.15rem; }
       .inquiries { margin-top: 56px; }
-      .link-pair a { font-size: 1.1rem; padding: 13px 22px; }
+      .link-pair a, .link-pair button { font-size: 1.1rem; padding: 13px 22px; }
       footer { padding: 44px 0 32px; }
+      .modal { padding: 40px 28px; }
+      .modal-title { font-size: 1.75rem; }
     }
 
     @media (max-width: 420px) {
       h1 { font-size: 2.6rem; }
       .tagline { font-size: 1.2rem; }
       .link-pair { flex-direction: column; gap: 14px; width: 100%; }
-      .link-pair a { width: 100%; max-width: 280px; text-align: center; }
+      .link-pair a, .link-pair button { width: 100%; max-width: 280px; text-align: center; }
     }
 
     @media (prefers-reduced-motion: reduce) {
@@ -312,7 +451,7 @@
       <div class="inquiries">
         <div class="inquiries-label">Inquiries</div>
         <div class="link-pair">
-          <a href="mailto:jamie.arias@bickertable.com?subject=Sponsorship%20Inquiry&body=Hello%2C%0A%0AI'd%20like%20to%20learn%20more%20about%20sponsoring%20The%20Bicker%20Table.%0A%0AName%3A%0ACompany%3A%0ARole%3A%0A%0A">Sponsorship</a>
+          <button type="button" id="open-sponsor-modal">Sponsorship</button>
           <a href="mailto:jamie.arias@bickertable.com?subject=Guest%20Nomination&body=Hello%2C%0A%0AI'd%20like%20to%20nominate%20a%20guest%20for%20The%20Bicker%20Table.%0A%0ANominee%3A%0ACompany%20%26%20Role%3A%0AWhy%20this%20seat%3A%0A%0AYour%20name%3A%0A">Guest Nomination</a>
         </div>
       </div>
@@ -324,5 +463,103 @@
       <div class="est">est. 2026</div>
     </footer>
   </div>
+
+  <div class="modal-overlay" id="sponsor-modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+    <div class="modal">
+      <button class="modal-close" id="close-sponsor-modal" aria-label="Close">&times;</button>
+
+      <div id="form-view">
+        <h2 class="modal-title" id="modal-title">Sponsorship Inquiry</h2>
+        <p class="modal-subtitle">Tell us a little about you.</p>
+
+        <form class="modal-form" id="sponsor-form">
+          <div class="field">
+            <label for="first_name">First Name</label>
+            <input type="text" id="first_name" name="first_name" required autocomplete="given-name" />
+          </div>
+
+          <div class="field">
+            <label for="last_name">Last Name</label>
+            <input type="text" id="last_name" name="last_name" required autocomplete="family-name" />
+          </div>
+
+          <div class="field">
+            <label for="company">Company</label>
+            <input type="text" id="company" name="company" required autocomplete="organization" />
+          </div>
+
+          <div class="field">
+            <label for="title">Title</label>
+            <input type="text" id="title" name="title" required autocomplete="organization-title" />
+          </div>
+
+          <div class="field">
+            <label for="email">Email</label>
+            <input type="email" id="email" name="email" required autocomplete="email" />
+          </div>
+
+          <button type="submit" class="submit-btn" id="submit-btn">Send Inquiry</button>
+        </form>
+      </div>
+
+      <div class="thank-you" id="thank-you">
+        <h3>Thank you.</h3>
+        <p>We'll be in touch.</p>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    (function() {
+      var overlay = document.getElementById('sponsor-modal');
+      var openBtn = document.getElementById('open-sponsor-modal');
+      var closeBtn = document.getElementById('close-sponsor-modal');
+      var form = document.getElementById('sponsor-form');
+      var formView = document.getElementById('form-view');
+      var thankYou = document.getElementById('thank-you');
+      var submitBtn = document.getElementById('submit-btn');
+
+      function openModal() {
+        overlay.classList.add('is-open');
+        document.body.style.overflow = 'hidden';
+        setTimeout(function() {
+          document.getElementById('first_name').focus();
+        }, 100);
+      }
+
+      function closeModal() {
+        overlay.classList.remove('is-open');
+        document.body.style.overflow = '';
+        setTimeout(function() {
+          form.reset();
+          formView.style.display = '';
+          thankYou.classList.remove('is-shown');
+          submitBtn.disabled = false;
+          submitBtn.textContent = 'Send Inquiry';
+        }, 400);
+      }
+
+      openBtn.addEventListener('click', openModal);
+      closeBtn.addEventListener('click', closeModal);
+
+      overlay.addEventListener('click', function(e) {
+        if (e.target === overlay) closeModal();
+      });
+
+      document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape' && overlay.classList.contains('is-open')) closeModal();
+      });
+
+      form.addEventListener('submit', function(e) {
+        e.preventDefault();
+        submitBtn.disabled = true;
+        submitBtn.textContent = 'Sending...';
+        setTimeout(function() {
+          formView.style.display = 'none';
+          thankYou.classList.add('is-shown');
+        }, 800);
+      });
+    })();
+  </script>
 </body>
 </html>
